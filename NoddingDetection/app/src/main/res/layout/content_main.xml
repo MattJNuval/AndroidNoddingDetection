@@ -71,7 +71,7 @@
             app:srcCompat="@drawable/arrow" />
 
         <ImageView
-            android:id="@+id/smile"
+            android:id="@+id/droid"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/img_smile_desc"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toStartOf="@+id/arrow_right"
             app:layout_constraintStart_toEndOf="@+id/arrow_left"
             app:layout_constraintTop_toBottomOf="@+id/arrow_top"
-            app:srcCompat="@drawable/smile" />
+            app:srcCompat="@drawable/droid" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

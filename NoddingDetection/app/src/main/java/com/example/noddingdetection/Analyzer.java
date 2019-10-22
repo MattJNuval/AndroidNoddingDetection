@@ -109,7 +109,7 @@ public class Analyzer {
                                 }
 
                                 if (faces.size() > 0 && ready) {
-                                    smile.setImageResource(R.drawable.smile_green);
+                                    smile.setImageResource(R.drawable.droid_green);
                                     if (!faceDetected) {
                                         Toast.makeText(activity, R.string.face_detected, Toast.LENGTH_SHORT)
                                                 .show();
@@ -350,7 +350,7 @@ public class Analyzer {
         this.recordedNodStart = 0;
         this.recordedShakeEnd = 0;
         this.recordedShakeStart = 0;
-        this.smile.setImageResource(R.drawable.smile);
+        this.smile.setImageResource(R.drawable.droid);
         this.status.setText(R.string.empty);
         return;
     }
@@ -391,7 +391,7 @@ public class Analyzer {
         this.posMid[1] = (TextView)this.activity.findViewById(R.id.pos_mid_y);
         this.posMid[2] = (TextView)this.activity.findViewById(R.id.pos_mid_z);
 
-        this.smile = (ImageView)this.activity.findViewById(R.id.smile);
+        this.smile = (ImageView)this.activity.findViewById(R.id.droid);
         this.status = (TextView)this.activity.findViewById(R.id.status);
 
         this.clearPosition();
