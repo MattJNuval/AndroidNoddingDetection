@@ -1,5 +1,6 @@
 package com.example.noddingdetection;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.widget.ImageView;
@@ -21,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class Analyzer {
-    private static final String TAG = "KAPLAN-2";
     private static final Float THRESHOLD = 50f;
     private static final int TIMEOUT_CLEARING = 2;
     private static final int TIMEOUT_DETECTION = 5;
@@ -53,6 +53,10 @@ public class Analyzer {
     private ImageView smile;
     private TextView status;
 
+
+    private Activity act;
+
+
     private Analyzer() {
         this(null);
         return;
@@ -61,6 +65,12 @@ public class Analyzer {
     public Analyzer(CommonActivity activity) {
         this(activity, Facing.FRONT);
         return;
+    }
+
+    public Analyzer(Activity activity) {
+        this.act = activity;
+
+
     }
 
     public Analyzer(CommonActivity activity, Facing lensFacing) {
@@ -134,31 +144,19 @@ public class Analyzer {
                                     final CorrectedFirebaseVisionPointWrapper eyesMidpoint = firebaseVisionMidpoint(leftEyePos, rightEyePos);
                                     final CorrectedFirebaseVisionPointWrapper eyesNoseMidpoint = firebaseVisionMidpoint(eyesMidpoint, noseBasePos);
 
-                                    pos[0].setText(res.getString(R.string.detail_position3,
-                                            "L. Eye X: ",  "~" + Math.floor(leftEyePos.getX()),
-                                            "Nose X: ",  "~" + Math.floor(noseBasePos.getX()),
-                                            "R. Eye X: ",  "~" + Math.floor(rightEyePos.getX())
-                                    ));
-                                    pos[1].setText(res.getString(R.string.detail_position3,
-                                            "L. Eye Y",  "~" + Math.floor(leftEyePos.getY()),
-                                            "Nose Y",  "~" + Math.floor(noseBasePos.getY()),
-                                            "R. Eye Y",  "~" + Math.floor(rightEyePos.getY())
-                                    ));
-                                    pos[2].setText(res.getString(R.string.detail_position3,
-                                            "L. Eye Z",  "~" + Math.floor(leftEyePos.getZ()),
-                                            "Nose Z",  "~" + Math.floor(noseBasePos.getZ()),
-                                            "R. Eye Z",  "~" + Math.floor(rightEyePos.getZ())
-                                    ));
 
-                                    posMid[0].setText(res.getString(R.string.detail_position,
-                                            "X",  "~" + Math.floor(eyesNoseMidpoint.getX())
-                                    ));
-                                    posMid[1].setText(res.getString(R.string.detail_position,
-                                            "Y",  "~" + Math.floor(eyesNoseMidpoint.getY())
-                                    ));
-                                    posMid[2].setText(res.getString(R.string.detail_position,
-                                            "Z",  "~" + Math.floor(eyesNoseMidpoint.getZ())
-                                    ));
+                                  /*  "Left Eye X, Y, and Z: " + "(" +Math.floor(leftEyePos.getX())+ ", " +Math.floor(leftEyePos.getY())+ ", "+Math.floor(leftEyePos.getZ())+ ")" + "\n"
+                                            + "Nose X, Y, and Z: " + "(" +Math.floor(noseBasePos.getX())+ ", " +Math.floor(noseBasePos.getY())+ ", "+Math.floor(noseBasePos.getZ())+ ")" + "\n"
+                                            + "Right Eye X, Y, and Z: " + "(" +Math.floor(rightEyePos.getX())+ ", " +Math.floor(rightEyePos.getY())+ ", "+Math.floor(rightEyePos.getZ())+ ")" + "\n"
+                                            + "Middle Position X, Y, and Z: " + "(" +Math.floor(eyesNoseMidpoint.getX())+ ", " +Math.floor(eyesNoseMidpoint.getY())+ ", "+Math.floor(eyesNoseMidpoint.getZ())+ ")" + "\n");
+                                    */
+
+                                    pos[0].setText(res.getString(R.string.detail_position3,"CURRENT POSITIONS: "+"\n"+"Left Eye X, Y, and Z: " + "(" +Math.floor(leftEyePos.getX())+ ", " +Math.floor(leftEyePos.getY())+ ", "+Math.floor(leftEyePos.getZ())+ ")" + "\n"
+                                            + "Nose X, Y, and Z: " + "(" +Math.floor(noseBasePos.getX())+ ", " +Math.floor(noseBasePos.getY())+ ", "+Math.floor(noseBasePos.getZ())+ ")" + "\n"
+                                            + "Right Eye X, Y, and Z: " + "(" +Math.floor(rightEyePos.getX())+ ", " +Math.floor(rightEyePos.getY())+ ", "+Math.floor(rightEyePos.getZ())+ ")" + "\n"
+                                            + "Middle Position X, Y, and Z: " + "(" +Math.floor(eyesNoseMidpoint.getX())+ ", " +Math.floor(eyesNoseMidpoint.getY())+ ", "+Math.floor(eyesNoseMidpoint.getZ())+ ")" + "\n"));
+
+
 
                                     if (!currentPosCaptured) {
                                         currentLeftEyePos = leftEyePos;
@@ -166,31 +164,10 @@ public class Analyzer {
                                         currentRightEyePos = rightEyePos;
                                         currentMidpoint = eyesNoseMidpoint;
 
-                                        capPos[0].setText(res.getString(R.string.detail_position3,
-                                                "L. Eye X",  "~" + Math.floor(currentLeftEyePos.getX()),
-                                                "Nose X",  "~" + Math.floor(currentNoseBasePos.getX()),
-                                                "R. Eye X",  "~" + Math.floor(currentRightEyePos.getX())
-                                        ));
-                                        capPos[1].setText(res.getString(R.string.detail_position3,
-                                                "L. Eye Y",  "~" + Math.floor(currentLeftEyePos.getY()),
-                                                "Nose Y",  "~" + Math.floor(currentNoseBasePos.getY()),
-                                                "R. Eye Y",  "~" + Math.floor(currentRightEyePos.getY())
-                                        ));
-                                        capPos[2].setText(res.getString(R.string.detail_position3,
-                                                "L. Eye Z: ",  "~" + Math.floor(currentLeftEyePos.getZ()),
-                                                "Nose Z",  "~" + Math.floor(currentNoseBasePos.getZ()),
-                                                "R. Eye Z",  "~" + Math.floor(currentRightEyePos.getZ())
-                                        ));
-
-                                        capPosMid[0].setText(res.getString(R.string.detail_position,
-                                                "X",  "~" + Math.floor(currentMidpoint.getX())
-                                        ));
-                                        capPosMid[1].setText(res.getString(R.string.detail_position,
-                                                "Y",  "~" + Math.floor(currentMidpoint.getY())
-                                        ));
-                                        capPosMid[2].setText(res.getString(R.string.detail_position,
-                                                "Z",  "~" + Math.floor(currentMidpoint.getZ())
-                                        ));
+                                        capPos[0].setText(res.getString(R.string.detail_position3, "CAPTURED POSITIONS: "+"\n"+"Left Eye X, Y, and Z: " + "(" +Math.floor(leftEyePos.getX())+ ", " +Math.floor(leftEyePos.getY())+ ", "+Math.floor(leftEyePos.getZ())+ ")" + "\n"
+                                                + "Nose X, Y, and Z: " + "(" +Math.floor(noseBasePos.getX())+ ", " +Math.floor(noseBasePos.getY())+ ", "+Math.floor(noseBasePos.getZ())+ ")" + "\n"
+                                                + "Right Eye X, Y, and Z: " + "(" +Math.floor(rightEyePos.getX())+ ", " +Math.floor(rightEyePos.getY())+ ", "+Math.floor(rightEyePos.getZ())+ ")" + "\n"
+                                                + "Middle Position X, Y, and Z: " + "(" +Math.floor(eyesNoseMidpoint.getX())+ ", " +Math.floor(eyesNoseMidpoint.getY())+ ", "+Math.floor(eyesNoseMidpoint.getZ())+ ")" + "\n"));
 
                                         currentPosCaptured = true;
                                     }
@@ -211,7 +188,7 @@ public class Analyzer {
                                             final float durationDetection = (recordedShakeEnd - recordedShakeStart) / 1000f;
 
                                             if (durationDetection <= Analyzer.TIMEOUT_DETECTION) {
-                                                status.setText(res.getString(R.string.status, "shaking", "no"));
+                                                status.setText(res.getString(R.string.status, "SHAKING", "NO"));
                                             }
                                         }
                                     }
@@ -230,7 +207,7 @@ public class Analyzer {
                                             final float durationDetection = (recordedNodEnd - recordedNodStart) / 1000f;
 
                                             if (durationDetection <= Analyzer.TIMEOUT_DETECTION) {
-                                                status.setText(res.getString(R.string.status, "nodding", "yes"));
+                                                status.setText(res.getString(R.string.status, "NODDING", "YES"));
                                             }
                                         }
                                     }
@@ -245,13 +222,6 @@ public class Analyzer {
                                         arrowTop.setImageResource(R.drawable.arrow);
                                     }
 
-                                    /*Log.i(Analyzer.TAG, "Results: "
-                                            + "{Left Eye: " + leftEyePos
-                                            + ", Nose Base: " + noseBasePos
-                                            + ", Right Eye: " + rightEyePos + "}");
-                                    Log.i(Analyzer.TAG, "Results (Midpoints): "
-                                            + "{Eyes: " + eyesMidpoint
-                                            + ", Eyes-Nose: " + eyesNoseMidpoint + "}");*/
                                 }
                                 else {
                                     Toast.makeText(activity,
@@ -279,62 +249,23 @@ public class Analyzer {
         this.currentNoseBasePos = new CorrectedFirebaseVisionPointWrapper(0f, 0f, 0f);
         this.currentRightEyePos = new CorrectedFirebaseVisionPointWrapper(0f, 0f, 0f);
 
-        this.capPos[0].setText(res.getString(R.string.detail_position3,
-                "L. Eye X",  "~0",
-                "Nose X",  "~0",
-                "R. Eye X",  "~0"
-        ));
-        this.capPos[1].setText(res.getString(R.string.detail_position3,
-                "L. Eye Y",  "0",
-                "Nose Y",  "~0",
-                "R. Eye Y",  "~0"
-        ));
-        this.capPos[2].setText(res.getString(R.string.detail_position3,
-                "L. Eye Z: ",  "~0",
-                "Nose Z",  "~0",
-                "R. Eye Z",  "~0"
-        ));
 
-        this.capPosMid[0].setText(res.getString(R.string.detail_position,
-                "X",  "~0"
-        ));
-        this.capPosMid[1].setText(res.getString(R.string.detail_position,
-                "Y",  "~0"
-        ));
-        this.capPosMid[2].setText(res.getString(R.string.detail_position,
-                "Z",  "~0"
-        ));
+        capPos[0].setText(res.getString(R.string.detail_position3, "CAPTURED POSITIONS: "+"\n"+"Left Eye X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"
+                + "Nose X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"
+                + "Right Eye X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"
+                + "Middle Position X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"));
+
 
         this.clearPosition();
         return;
     }
 
     public void clearPosition() {
-        this.pos[0].setText(res.getString(R.string.detail_position3,
-                "L. Eye X",  "~0",
-                "Nose X",  "~0",
-                "R. Eye X",  "~0"
-        ));
-        this.pos[1].setText(res.getString(R.string.detail_position3,
-                "L. Eye Y",  "0",
-                "Nose Y",  "~0",
-                "R. Eye Y",  "~0"
-        ));
-        this.pos[2].setText(res.getString(R.string.detail_position3,
-                "L. Eye Z: ",  "~0",
-                "Nose Z",  "~0",
-                "R. Eye Z",  "~0"
-        ));
 
-        this.posMid[0].setText(res.getString(R.string.detail_position,
-                "X",  "~0"
-        ));
-        this.posMid[1].setText(res.getString(R.string.detail_position,
-                "Y",  "~0"
-        ));
-        this.posMid[2].setText(res.getString(R.string.detail_position,
-                "Z",  "~0"
-        ));
+        capPos[0].setText(res.getString(R.string.detail_position3, "CAPTURED POSITIONS: "+"\n"+"Left Eye X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"
+                + "Nose X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"
+                + "Right Eye X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"
+                + "Middle Position X, Y, and Z: " + "(" +Math.floor(0)+ ", " +Math.floor(0)+ ", "+Math.floor(0)+ ")" + "\n"));
 
         this.clearStatus();
         return;
@@ -373,23 +304,10 @@ public class Analyzer {
 
         this.capPos = new TextView[3];
         this.capPos[0] = (TextView)this.activity.findViewById(R.id.cap_pos_x);
-        this.capPos[1] = (TextView)this.activity.findViewById(R.id.cap_pos_y);
-        this.capPos[2] = (TextView)this.activity.findViewById(R.id.cap_pos_z);
 
-        this.capPosMid = new TextView[3];
-        this.capPosMid[0] = (TextView)this.activity.findViewById(R.id.cap_pos_mid_x);
-        this.capPosMid[1] = (TextView)this.activity.findViewById(R.id.cap_pos_mid_y);
-        this.capPosMid[2] = (TextView)this.activity.findViewById(R.id.cap_pos_mid_z);
 
         this.pos = new TextView[3];
         this.pos[0] = (TextView)this.activity.findViewById(R.id.pos_x);
-        this.pos[1] = (TextView)this.activity.findViewById(R.id.pos_y);
-        this.pos[2] = (TextView)this.activity.findViewById(R.id.pos_z);
-
-        this.posMid = new TextView[3];
-        this.posMid[0] = (TextView)this.activity.findViewById(R.id.pos_mid_x);
-        this.posMid[1] = (TextView)this.activity.findViewById(R.id.pos_mid_y);
-        this.posMid[2] = (TextView)this.activity.findViewById(R.id.pos_mid_z);
 
         this.smile = (ImageView)this.activity.findViewById(R.id.droid);
         this.status = (TextView)this.activity.findViewById(R.id.status);

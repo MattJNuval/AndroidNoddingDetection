@@ -3,12 +3,17 @@ package com.example.noddingdetection;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,12 +29,14 @@ import com.otaliastudios.cameraview.CameraView;
 import java.util.List;
 
 public class MainActivity
-        extends CommonActivity {
-    private static final String TAG = "NOGA";
+        extends CommonActivity implements AdapterView.OnItemSelectedListener  {
 
     private boolean cameraAllowed;
     private CameraControl cameraControl;
     private int cameraPreviewVisible;
+    private Button swapCamera;
+
+    private Spinner spinner;
 
     public MainActivity() {
         super();
@@ -70,22 +77,29 @@ public class MainActivity
         final Toolbar toolbar = super.findViewById(R.id.toolbar);
         super.setSupportActionBar(toolbar);
 
+        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.camera_array, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+        swapCamera = (Button) findViewById(R.id.swapCameraBtn);
+
         Dexter.withActivity(this)
                 .withPermissions(
                         Manifest.permission.CAMERA,
                         Manifest.permission.RECORD_AUDIO
                 )
                 .withListener(new MultiplePermissionsListener() {
-                    private static final String TAG = "WIEGLY";
 
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                            Log.i(MainActivity.TAG, "Needed permissions were granted!");
                             cameraAllowed = true;
                         }
                         else {
-                            Log.w(MainActivity.TAG, "Needed permissions were not granted!");
                             cameraAllowed = false;
                         }
                         return;
@@ -104,35 +118,6 @@ public class MainActivity
         final CameraView cameraPreviewView = (CameraView)super.findViewById(R.id.camera_preview_view);
         this.cameraPreviewVisible = cameraPreviewView.getVisibility();
         final ConstraintLayout detailsView = (ConstraintLayout)super.findViewById(R.id.detail_view);
-
-        final FloatingActionButton fabLeft = (FloatingActionButton)super.findViewById(R.id.fab_left);
-        fabLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (cameraPreviewVisible == View.VISIBLE) {
-                    swapViewsAnimated(cameraPreviewView, detailsView);
-                    cameraPreviewVisible = View.GONE;
-                }
-                else {
-                    swapViewsAnimated(detailsView, cameraPreviewView);
-                    cameraPreviewVisible = View.VISIBLE;
-                }
-                vibrate(300);
-                return;
-            }
-        });
-
-        final FloatingActionButton fabRight = (FloatingActionButton)super.findViewById(R.id.fab_right);
-        fabRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cameraControl.swapLens();
-                vibrate(300);
-                return;
-            }
-        });
-
-        Log.d(MainActivity.TAG, "I love nodding detection!");
         return;
     }
 
@@ -174,6 +159,18 @@ public class MainActivity
             super.startActivity(homeIntent);
             return true;
         }
+        else if(id == R.id.swap_camera) {
+            if(swapCamera.getText() == "Front View") {
+                cameraControl.swapLens();
+                swapCamera.setText("Rear View");
+                vibrate(300);
+            } else {
+                cameraControl.swapLens();
+                swapCamera.setText("Front View");
+                vibrate(300);
+            }
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -185,11 +182,44 @@ public class MainActivity
                 this.cameraControl.onDestroy();
             }
             catch (Exception e) {
-                Log.e(MainActivity.TAG, e.toString());
                 e.printStackTrace();
                 super.showError(e.getMessage());
             }
         }
         return;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        final CameraView cameraPreviewView = (CameraView)super.findViewById(R.id.camera_preview_view);
+        this.cameraPreviewVisible = cameraPreviewView.getVisibility();
+        final ConstraintLayout detailsView = (ConstraintLayout)super.findViewById(R.id.detail_view);
+
+        if(position == 0) {
+            swapViewsAnimated(detailsView, cameraPreviewView);
+            cameraPreviewVisible = View.VISIBLE;
+        } else if(position == 1) {
+            swapViewsAnimated(cameraPreviewView, detailsView);
+            cameraPreviewVisible = View.GONE;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void onSwap(View view)  {
+        if(swapCamera.getText() == "Front View") {
+            cameraControl.swapLens();
+            swapCamera.setText("Rear View");
+            vibrate(300);
+        } else {
+            cameraControl.swapLens();
+            swapCamera.setText("Front View");
+            vibrate(300);
+        }
+
     }
 }

@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.github.cshadd.nodding_detection_android.MainActivity">
     <item
+        android:id="@+id/swap_camera"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Swap Camera"
+        />
+    <item
         android:id="@+id/action_clear"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/clear" />
