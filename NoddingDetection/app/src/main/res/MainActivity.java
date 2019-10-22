@@ -1,4 +1,4 @@
-package com.example.noddingdetection;
+package io.github.cshadd.nodding_detection_android;
 
 import android.Manifest;
 import android.animation.Animator;
