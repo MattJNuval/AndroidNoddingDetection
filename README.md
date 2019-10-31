@@ -7,7 +7,6 @@
 
 * [Software Dependencies](#Software-Dependencies)
 * [Git Clone](#Git-Clone)
-* [SQL Database](#SQL-Database)
 * [Usage](#Usage)
 * [Contributors](#Contributors)
 * [Acknowledgment](#Acknowledgment)
