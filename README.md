@@ -9,7 +9,6 @@
 * [Git Clone](#Git-Clone)
 * [SQL Database](#SQL-Database)
 * [Usage](#Usage)
-* [Versioning](#Versioning)
 * [Contributors](#Contributors)
 * [Acknowledgment](#Acknowledgment)
 
@@ -32,6 +31,9 @@ in a terminal.
 
 ## Usage
 After opened in Android studio just press the play button in the located on top of Android Studio.
+
+## Contributors
+* Mathew Nuval
 
 ## Acknowledgments
 * https://developer.android.com/studio
