@@ -32,7 +32,7 @@ in a terminal.
 After opened in Android studio just press the play button in the located on top of Android Studio.
 
 ## Contributors
-* Mathew Nuval
+* Mathew Nuval | Project Owner
 
 ## Acknowledgments
 * https://developer.android.com/studio
